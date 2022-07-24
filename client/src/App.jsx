@@ -1,23 +1,36 @@
 import { EthProvider } from "./contexts/EthContext";
-import Intro from "./components/Intro/";
-import Setup from "./components/Setup";
 import Demo from "./components/Demo";
-import Footer from "./components/Footer";
-import "./App.css";
+import styled, { createGlobalStyle } from "styled-components";
+
+const GlobalStyles = createGlobalStyle`
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #333;
+    background-color: whitesmoke;
+    box-sizing: border-box;
+  }
+`;
+
+const Container = styled.div`
+  margin: 0 auto;
+  width: 800px;
+  border-radius: 8px;
+  background-color: white;
+`;
 
 function App() {
   return (
     <EthProvider>
-      <div id="App" >
-        <div className="container">
-          <Intro />
-          <hr />
-          <Setup />
-          <hr />
+      <GlobalStyles />
+      <div id="App">
+        <Container>
           <Demo />
-          <hr />
-          <Footer />
-        </div>
+        </Container>
       </div>
     </EthProvider>
   );

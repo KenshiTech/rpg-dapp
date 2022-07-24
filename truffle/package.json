@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@kenshi.io/vrf-consumer": "^0.10.4",
+    "@truffle/hdwallet-provider": "^2.0.9",
+    "solc": "^0.8.15"
+  }
+}
