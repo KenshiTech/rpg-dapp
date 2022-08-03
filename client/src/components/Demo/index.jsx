@@ -3,11 +3,46 @@ import styled from "styled-components";
 import useEth from "../../contexts/EthContext/useEth";
 import NoticeNoArtifact from "./NoticeNoArtifact";
 import NoticeWrongNetwork from "./NoticeWrongNetwork";
+import { MdOutlineErrorOutline } from "react-icons/md";
 import { maybeConfig, rollDice, fetchEvent, tryAgain } from "../../lib/dice";
 import Marker from "../Marker";
+import ClipLoader from "react-spinners/ClipLoader";
+
+const LOADER_SIZE = 20;
+const LOADER_COLOR = "#fff";
 
 const Container = styled.div`
   padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+
+  & .roll-button {
+    border-radius: 4px;
+    background-color: #5688c7;
+    font-size: 2em;
+    color: #fff;
+    border: none;
+    padding: 1em;
+    cursor: pointer;
+    box-shadow: #336199 0px 7px 0px 0px;
+    margin: 3rem 0;
+    width: 150px;
+    align-self: center;
+  }
+
+  & .roll-button:hover {
+    box-shadow: #336199 0px 9px 0px 0px;
+    transform: translateY(-2px);
+  }
+
+  & .roll-button:active {
+    box-shadow: #336199 0px 2px 0px 0px;
+    transform: translateY(5px);
+  }
+
+  & .error {
+    color: #ff0000;
+  }
 `;
 
 const Step = styled.div`
@@ -41,6 +76,8 @@ function Demo() {
     state: { artifact, contract, accounts },
   } = useEth();
   const [value, setValue] = useState("");
+  const [lastStep, setLastStep] = useState("");
+  const [error, setError] = useState(null);
   const [steps, setSteps] = useState([]);
 
   const appendStep = (step) => {
@@ -56,25 +93,31 @@ function Demo() {
 
     appendStep("event");
     await tryAgain(10, async () => {
-      const result = await fetchEvent(parseInt(requestId, 10));
-      if (result) {
-        setValue(result);
-        appendStep("done");
+      try {
+        const result = await fetchEvent(parseInt(requestId, 10));
+        if (result) {
+          setValue(result);
+          appendStep("done");
+          return true;
+        }
+        return false;
+      } catch (error) {
+        console.error(error);
+        setError(error);
         return true;
       }
-      return false;
     });
   };
 
   useEffect(() => {
-    console.log(steps);
+    setLastStep(steps.length ? steps[steps.length - 1] : "");
   }, [steps]);
 
   const stepsJsx = {
     roll: (
       <Step>
         <div className="marker">
-          <Marker type="start" loading={steps[steps.length - 1] === "roll"} />
+          <Marker type="start" error={error && lastStep === "roll"} loading={lastStep === "roll"} />
         </div>
         <h3>The VRF call is submitted</h3>
         <p>
@@ -88,7 +131,7 @@ function Demo() {
     event: (
       <Step>
         <div className="marker">
-          <Marker type="middle" loading={steps[steps.length - 1] === "event"} />
+          <Marker type="middle" error={error && lastStep === "event"} loading={lastStep === "event"} />
         </div>
         <h3>Waiting for the blockchain event</h3>
         <p>
@@ -101,7 +144,7 @@ function Demo() {
     done: (
       <Step>
         <div className="marker">
-          <Marker type="end" />
+          <Marker type="end" error={error} />
         </div>
         <h3>The VRF gave the number {value}</h3>
         <p>
@@ -115,14 +158,22 @@ function Demo() {
   return (
     <Container>
       <h1>Blockchain dice roller</h1>
-
+      {error && <p className="error">⚠️ {error.message}</p>}
       {!artifact ? (
         <NoticeNoArtifact />
       ) : !contract ? (
         <NoticeWrongNetwork />
       ) : (
-        <button onClick={roll} disabled={steps.length && !steps.includes("done")}>
-          Roll
+        <button className="roll-button" onClick={roll} disabled={(steps.length && !steps.includes("done")) || error}>
+          {error ? (
+            <MdOutlineErrorOutline size={LOADER_SIZE * 1.5} color={LOADER_COLOR} />
+          ) : steps.length && !steps.includes("done") ? (
+            <ClipLoader color={LOADER_COLOR} size={LOADER_SIZE} />
+          ) : steps.includes("done") && value ? (
+            value
+          ) : (
+            "Roll"
+          )}
         </button>
       )}
 

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import ClipLoader from "react-spinners/ClipLoader";
-import { MdDone } from "react-icons/md";
+import { MdDone, MdOutlineErrorOutline } from "react-icons/md";
 
 const LOADER_SIZE = 20;
 const LOADER_COLOR = "#fff";
@@ -40,14 +40,16 @@ const Container = styled.div`
   }
 `;
 
-export default function Marker({ type, loading }) {
+export default function Marker({ type, loading, error }) {
   return (
     <Container>
       {type === "start" ? (
         <>
           <div className="middle">
             <div className="roundel">
-              {loading ? (
+              {error ? (
+                <MdOutlineErrorOutline color={LOADER_COLOR} size={LOADER_SIZE + "px"} />
+              ) : loading ? (
                 <ClipLoader color={LOADER_COLOR} size={LOADER_SIZE} />
               ) : (
                 <MdDone color={LOADER_COLOR} size={LOADER_SIZE + "px"} />
@@ -61,7 +63,9 @@ export default function Marker({ type, loading }) {
           <div className="top"></div>
           <div className="middle">
             <div className="roundel">
-              {loading ? (
+              {error ? (
+                <MdOutlineErrorOutline color={LOADER_COLOR} size={LOADER_SIZE + "px"} />
+              ) : loading ? (
                 <ClipLoader color={LOADER_COLOR} size={LOADER_SIZE} />
               ) : (
                 <MdDone color={LOADER_COLOR} size={LOADER_SIZE + "px"} />
@@ -75,7 +79,9 @@ export default function Marker({ type, loading }) {
           <div className="top"></div>
           <div className="middle">
             <div className="roundel">
-              {loading ? (
+              {error ? (
+                <MdOutlineErrorOutline color={LOADER_COLOR} size={LOADER_SIZE + "px"} />
+              ) : loading ? (
                 <ClipLoader color={LOADER_COLOR} size={LOADER_SIZE} />
               ) : (
                 <MdDone color={LOADER_COLOR} size={LOADER_SIZE + "px"} />

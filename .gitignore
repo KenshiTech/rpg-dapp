@@ -2,4 +2,5 @@ client/node_modules
 client/src/contracts/*.json
 truffle/node_modules
 truffle/.secret
+truffle/.env*
 client/.env*

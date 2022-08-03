@@ -35,7 +35,7 @@ export const fetchEvent = async (requestId) => {
   const endpoint = "https://api.kenshi.io/index/graphql";
   const apiKey = process.env.REACT_APP_DEEP_INDEX_API_KEY;
   const owner = process.env.REACT_APP_OWNER;
-  const contract = process.env.REACT_APP_ADDRESS;
+  const contract = process.env.REACT_APP_CONTRACT_ADDRESS;
 
   const query = `{
       getEntries(blockchain: "avalanche-fuji", apikey: "${apiKey}", owner: "${owner}", address: "${contract}", event: "Rolled") {

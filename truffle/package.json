@@ -2,6 +2,7 @@
   "dependencies": {
     "@kenshi.io/vrf-consumer": "^0.10.4",
     "@truffle/hdwallet-provider": "^2.0.9",
+    "dotenv": "^16.0.1",
     "solc": "^0.8.15"
   }
 }
