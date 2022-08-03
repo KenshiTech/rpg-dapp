@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import useEth from "../../contexts/EthContext/useEth";
-import NoticeNoArtifact from "./NoticeNoArtifact";
 import NoticeWrongNetwork from "./NoticeWrongNetwork";
 import { MdOutlineErrorOutline } from "react-icons/md";
 import { maybeConfig, rollDice, fetchEvent, tryAgain } from "../../lib/dice";
@@ -73,7 +72,7 @@ const Step = styled.div`
 
 function Demo() {
   const {
-    state: { artifact, contract, accounts },
+    state: { contract, accounts },
   } = useEth();
   const [value, setValue] = useState("");
   const [lastStep, setLastStep] = useState("");
@@ -159,9 +158,7 @@ function Demo() {
     <Container>
       <h1>Blockchain dice roller</h1>
       {error && <p className="error">⚠️ {error.message}</p>}
-      {!artifact ? (
-        <NoticeNoArtifact />
-      ) : !contract ? (
+      {!contract ? (
         <NoticeWrongNetwork />
       ) : (
         <button className="roll-button" onClick={roll} disabled={(steps.length && !steps.includes("done")) || error}>
