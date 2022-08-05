@@ -4,3 +4,4 @@ truffle/node_modules
 truffle/.secret
 truffle/.env*
 client/.env*
+client/.vercel
