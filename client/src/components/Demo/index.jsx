@@ -114,7 +114,7 @@ function Demo() {
 
   const stepsJsx = {
     roll: (
-      <Step>
+      <Step key="roll">
         <div className="marker">
           <Marker type="start" error={error && lastStep === "roll"} loading={lastStep === "roll"} />
         </div>
@@ -128,7 +128,7 @@ function Demo() {
       </Step>
     ),
     event: (
-      <Step>
+      <Step key="event">
         <div className="marker">
           <Marker type="middle" error={error && lastStep === "event"} loading={lastStep === "event"} />
         </div>
@@ -141,7 +141,7 @@ function Demo() {
       </Step>
     ),
     done: (
-      <Step>
+      <Step key="done">
         <div className="marker">
           <Marker type="end" error={error} />
         </div>
