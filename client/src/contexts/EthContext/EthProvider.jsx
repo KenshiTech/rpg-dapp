@@ -13,6 +13,10 @@ function EthProvider({ children }) {
     const networkID = await web3.eth.net.getId();
     let contract;
     try {
+      // Not Fuji
+      if (networkID !== 43113) {
+        throw new Error("Not Avalanche Fuji (C-Chain).");
+      }
       contract = new web3.eth.Contract(abi, process.env.REACT_APP_CONTRACT_ADDRESS);
     } catch (err) {
       console.error(err);
