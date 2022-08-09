@@ -1,20 +1,3 @@
-const CONFIG_FLAG = "configured";
-
-const hasConfigFlag = () => {
-  return localStorage.getItem(CONFIG_FLAG) === "true";
-};
-
-const setConfigFlag = () => {
-  localStorage.setItem(CONFIG_FLAG, "true");
-};
-
-export const maybeConfig = async (contract, account) => {
-  if (!hasConfigFlag()) {
-    await contract.methods.setVRFConfig(process.env.REACT_APP_COORDINATOR).send({ from: account });
-    setConfigFlag();
-  }
-};
-
 export const rollDice = async (contract, account) => {
   const sides = 20;
   console.log(`Rolling D${sides}...`);

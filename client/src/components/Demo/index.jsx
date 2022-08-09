@@ -3,7 +3,7 @@ import styled from "styled-components";
 import useEth from "../../contexts/EthContext/useEth";
 import NoticeWrongNetwork from "./NoticeWrongNetwork";
 import { MdOutlineErrorOutline } from "react-icons/md";
-import { maybeConfig, rollDice, fetchEvent, tryAgain } from "../../lib/dice";
+import { rollDice, fetchEvent, tryAgain } from "../../lib/dice";
 import Marker from "../Marker";
 import ClipLoader from "react-spinners/ClipLoader";
 
@@ -85,7 +85,6 @@ function Demo() {
 
   const roll = async () => {
     setSteps([]);
-    await maybeConfig(contract, accounts[0]);
     appendStep("roll");
 
     const requestId = await rollDice(contract, accounts[0]);
