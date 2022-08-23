@@ -48,7 +48,6 @@ export const fetchEvent = async (requestId) => {
     throw errors[0];
   }
   if (data && Array.isArray(data.getEntries)) {
-    console.log(data.getEntries, requestId);
     const request = data.getEntries.find((e) =>
       e.event.args.some((a) => a[0] === "requestId" && parseInt(a[1], 16) === requestId)
     );

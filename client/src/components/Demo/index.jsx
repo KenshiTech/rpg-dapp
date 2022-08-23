@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import useEth from "../../contexts/EthContext/useEth";
-import NoticeWrongNetwork from "./NoticeWrongNetwork";
 import { MdOutlineErrorOutline } from "react-icons/md";
+import ContractError from "./ContractError";
 import { rollDice, fetchEvent, tryAgain } from "../../lib/dice";
 import Marker from "../Marker";
 import ClipLoader from "react-spinners/ClipLoader";
+import Wallets from "../Wallets";
+import Button from "../Button";
 
 const LOADER_SIZE = 20;
 const LOADER_COLOR = "#fff";
@@ -14,29 +16,11 @@ const Container = styled.div`
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
+  gap: 1rem;
 
-  & .roll-button {
-    border-radius: 4px;
-    background-color: #5688c7;
-    font-size: 2em;
-    color: #fff;
-    border: none;
-    padding: 1em;
-    cursor: pointer;
-    box-shadow: #336199 0px 7px 0px 0px;
-    margin: 3rem 0;
-    width: 150px;
-    align-self: center;
-  }
-
-  & .roll-button:hover {
-    box-shadow: #336199 0px 9px 0px 0px;
-    transform: translateY(-2px);
-  }
-
-  & .roll-button:active {
-    box-shadow: #336199 0px 2px 0px 0px;
-    transform: translateY(5px);
+  & .header {
+    display: flex;
+    justify-content: space-between;
   }
 
   & .error {
@@ -72,7 +56,7 @@ const Step = styled.div`
 
 function Demo() {
   const {
-    state: { contract, accounts },
+    state: { contract, wallet, initialized },
   } = useEth();
   const [value, setValue] = useState("");
   const [lastStep, setLastStep] = useState("");
@@ -87,7 +71,7 @@ function Demo() {
     setSteps([]);
     appendStep("roll");
 
-    const requestId = await rollDice(contract, accounts[0]);
+    const requestId = await rollDice(contract, wallet.accounts[0].address);
 
     appendStep("event");
     await tryAgain(10, async () => {
@@ -155,12 +139,17 @@ function Demo() {
 
   return (
     <Container>
-      <h1>Blockchain dice roller</h1>
+      <div className="header">
+        <h1>Dice roller</h1>
+        <Wallets />
+      </div>
       {error && <p className="error">⚠️ {error.message}</p>}
-      {!contract ? (
-        <NoticeWrongNetwork />
+      {!initialized ? (
+        <p>You should connect your wallet first.</p>
+      ) : !contract ? (
+        <ContractError />
       ) : (
-        <button className="roll-button" onClick={roll} disabled={(steps.length && !steps.includes("done")) || error}>
+        <Button onClick={roll} disabled={(steps.length && !steps.includes("done")) || error}>
           {error ? (
             <MdOutlineErrorOutline size={LOADER_SIZE * 1.5} color={LOADER_COLOR} />
           ) : steps.length && !steps.includes("done") ? (
@@ -170,12 +159,14 @@ function Demo() {
           ) : (
             "Roll"
           )}
-        </button>
+        </Button>
       )}
 
-      {steps.map((step) => {
-        return stepsJsx[step];
-      })}
+      <div className="steps">
+        {steps.map((step) => {
+          return stepsJsx[step];
+        })}
+      </div>
 
       <p>
         An example created using <a href="https://docs.kenshi.io/services/vrf/index.html">Kenshi VRF</a> and{" "}

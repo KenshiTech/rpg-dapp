@@ -1,12 +1,12 @@
 const actions = {
   init: "INIT",
+  updateWallet: "UPDATE_WALLET",
 };
 
 const initialState = {
-  web3: null,
-  accounts: null,
-  networkID: null,
+  wallet: null,
   contract: null,
+  initialized: false,
 };
 
 const reducer = (state, action) => {
@@ -14,6 +14,8 @@ const reducer = (state, action) => {
   switch (type) {
     case actions.init:
       return { ...state, ...data };
+    case actions.updateWallet:
+      return { ...state, wallet: data };
     default:
       throw new Error("Undefined reducer action type");
   }
