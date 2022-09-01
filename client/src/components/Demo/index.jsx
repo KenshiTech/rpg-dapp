@@ -6,7 +6,6 @@ import ContractError from "./ContractError";
 import { rollDice, fetchEvent, tryAgain } from "../../lib/dice";
 import Marker from "../Marker";
 import ClipLoader from "react-spinners/ClipLoader";
-import Wallets from "../Wallets";
 import Button from "../Button";
 import JSConfetti from "js-confetti";
 
@@ -146,7 +145,6 @@ function Demo() {
 
   return (
     <Container>
-      <Wallets />
       <div className="header">
         <h1>Dice roller</h1>
       </div>

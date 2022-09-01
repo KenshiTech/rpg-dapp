@@ -10,7 +10,7 @@ const Button = styled.div`
   border: none;
   align-items: center;
   justify-content: center;
-  padding: 0.4em 1em;
+  padding: 0.4em 0;
   cursor: pointer;
   background: transparent;
   gap: 0.75em;

@@ -1,5 +1,6 @@
 import { EthProvider } from "./contexts/EthContext";
 import Demo from "./components/Demo";
+import Wallets from "./components/Wallets";
 import styled, { createGlobalStyle } from "styled-components";
 
 const GlobalStyles = createGlobalStyle`
@@ -53,15 +54,23 @@ const GlobalStyles = createGlobalStyle`
 `;
 
 const Container = styled.div`
-  margin: 0 15%;
   width: 600px;
-  margin: 1.5rem auto;
-  border-radius: 8px;
-  background-color: white;
+  margin: 0 auto;
 
-  @media (max-width: 768px) {
-    margin: 1.5rem;
-    width: calc(100% - 3rem);
+  & .wallet {
+    padding: 1em 0;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  & .demo {
+    border-radius: 8px;
+    background-color: white;
+
+    @media (max-width: 768px) {
+      margin: 1.5rem;
+      width: calc(100% - 3rem);
+    }
   }
 `;
 
@@ -71,7 +80,12 @@ function App() {
       <GlobalStyles />
       <div id="App">
         <Container>
-          <Demo />
+          <div className="wallet">
+            <Wallets />
+          </div>
+          <div className="demo">
+            <Demo />
+          </div>
         </Container>
       </div>
     </EthProvider>
