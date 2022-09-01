@@ -1,30 +1,22 @@
 import styled from "styled-components";
 
 const Btn = styled.button`
+  border: 1px solid var(--primary-color);
+  padding: 0.5em 1em;
+  border-radius: 0.5em;
   display: flex;
   align-items: center;
-  gap: 0.5em;
-  border-radius: 4px;
-  background-color: #5688c7;
-  font-size: 2em;
+  gap: 0.75em;
+  cursor: pointer;
   color: #fff;
+  background: #000;
   border: none;
-  padding: 1em;
-  cursor: pointer;
-  box-shadow: #336199 0px 7px 0px 0px;
-  margin: 3rem 0;
   align-self: center;
-  cursor: pointer;
-
-  &:hover {
-    box-shadow: #336199 0px 9px 0px 0px;
-    transform: translateY(-2px);
-  }
-
-  &:active {
-    box-shadow: #336199 0px 2px 0px 0px;
-    transform: translateY(5px);
-  }
+  text-align: center;
+  width: 100px;
+  align-items: center;
+  justify-content: center;
+  font-size: 2em;
 `;
 
 export default function Button({ onClick, disabled, children }) {

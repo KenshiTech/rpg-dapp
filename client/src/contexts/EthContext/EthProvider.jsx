@@ -25,6 +25,10 @@ function EthProvider({ children }) {
     dispatch({ type: actions.updateWallet, data: wallet });
   };
 
+  const reset = () => {
+    dispatch({ type: actions.reset });
+  };
+
   return (
     <EthContext.Provider
       value={{
@@ -32,6 +36,7 @@ function EthProvider({ children }) {
         dispatch,
         init,
         updateWallet,
+        reset,
       }}
     >
       {children}

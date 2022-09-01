@@ -8,8 +8,9 @@ import Marker from "../Marker";
 import ClipLoader from "react-spinners/ClipLoader";
 import Wallets from "../Wallets";
 import Button from "../Button";
+import JSConfetti from "js-confetti";
 
-const LOADER_SIZE = 20;
+const LOADER_SIZE = 32;
 const LOADER_COLOR = "#fff";
 
 const Container = styled.div`
@@ -21,6 +22,10 @@ const Container = styled.div`
   & .header {
     display: flex;
     justify-content: space-between;
+  }
+
+  & .button {
+    margin: 1em auto;
   }
 
   & .error {
@@ -80,6 +85,10 @@ function Demo() {
         if (result) {
           setValue(result);
           appendStep("done");
+
+          const jsConfetti = new JSConfetti();
+          jsConfetti.addConfetti();
+
           return true;
         }
         return false;
@@ -103,10 +112,8 @@ function Demo() {
         </div>
         <h3>The VRF call is submitted</h3>
         <p>
-          The player told the other players the rolled number. The dice roll would be the VRF call. "told the other
-          players" would be the submitted blockchain transaction. Now the transaction is being verified by all other
-          peers, or in RPG terms, the other players are looking at the dice and verifying if the number is the same as
-          the player said.
+          A request has been made to the smart contract to roll the dice. The Kenshi VRF has been called. Now the VRF is
+          waiting for the blockchain transation to be submitted.
         </p>
       </Step>
     ),
@@ -117,9 +124,9 @@ function Demo() {
         </div>
         <h3>Waiting for the blockchain event</h3>
         <p>
-          Now the players verified the dice roll and are writing down the rolled number, just to make sure all of them
-          agree on the rolled number. "Writing down" would be the appended transaction to the block chain. After this
-          step, the rolled number is sure to be true because it was verified by multiple peers/players.
+          The transaction has been submitted, and now the resulting block has to be mined and appended to the
+          blockchain. This might take a while depending on the chain used. The Kenshi Deep Index can only fetch events
+          that are on the blockchain.
         </p>
       </Step>
     ),
@@ -130,8 +137,8 @@ function Demo() {
         </div>
         <h3>The VRF gave the number {value}</h3>
         <p>
-          This is the final number returned by the VRF. In RPG terms, this number matches what the player said, the
-          number on the dice, and the number all the players wrote down. Fair game for all! 🎉
+          The block has been mined and appended to the blockchain. Now the Kenshi Deep Index is able to find it based on
+          the parameters the application provides. And here is the result. 🎉
         </p>
       </Step>
     ),
@@ -139,9 +146,9 @@ function Demo() {
 
   return (
     <Container>
+      <Wallets />
       <div className="header">
         <h1>Dice roller</h1>
-        <Wallets />
       </div>
       {error && <p className="error">⚠️ {error.message}</p>}
       {!initialized ? (
@@ -149,24 +156,28 @@ function Demo() {
       ) : !contract ? (
         <ContractError />
       ) : (
-        <Button onClick={roll} disabled={(steps.length && !steps.includes("done")) || error}>
-          {error ? (
-            <MdOutlineErrorOutline size={LOADER_SIZE * 1.5} color={LOADER_COLOR} />
-          ) : steps.length && !steps.includes("done") ? (
-            <ClipLoader color={LOADER_COLOR} size={LOADER_SIZE} />
-          ) : steps.includes("done") && value ? (
-            value
-          ) : (
-            "Roll"
-          )}
-        </Button>
+        <>
+          <p>Make sure your wallet is connected to Avalanche Fuji C-Chain and you have enough AVAX for gas.</p>
+          <div className="button">
+            <Button onClick={roll} disabled={(steps.length && !steps.includes("done")) || error}>
+              {error ? (
+                <MdOutlineErrorOutline size={LOADER_SIZE * 1.5} color={LOADER_COLOR} />
+              ) : steps.length && !steps.includes("done") ? (
+                <ClipLoader color={LOADER_COLOR} size={LOADER_SIZE} />
+              ) : steps.includes("done") && value ? (
+                value
+              ) : (
+                "Roll"
+              )}
+            </Button>
+          </div>
+          <div className="steps">
+            {steps.map((step) => {
+              return stepsJsx[step];
+            })}
+          </div>
+        </>
       )}
-
-      <div className="steps">
-        {steps.map((step) => {
-          return stepsJsx[step];
-        })}
-      </div>
 
       <p>
         An example created using <a href="https://docs.kenshi.io/services/vrf/index.html">Kenshi VRF</a> and{" "}

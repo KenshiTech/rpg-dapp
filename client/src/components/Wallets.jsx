@@ -14,6 +14,7 @@ const Button = styled.div`
   cursor: pointer;
   background: transparent;
   gap: 0.75em;
+  align-self: flex-end;
 
   & svg {
     height: 1em;
@@ -33,11 +34,13 @@ export default function Wallets({ isMobile }) {
     state: { wallet },
     init,
     updateWallet,
+    reset,
   } = useEth();
 
   const connect = async () => {
     if (wallet?.provider) {
       await onboard.disconnectWallet({ label: wallet.label });
+      reset();
     } else {
       const [wallet] = await onboard.connectWallet();
       await onboard.setChain({ chainId: "0xa869" });

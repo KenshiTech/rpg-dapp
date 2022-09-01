@@ -1,6 +1,7 @@
 const actions = {
   init: "INIT",
   updateWallet: "UPDATE_WALLET",
+  reset: "RESET",
 };
 
 const initialState = {
@@ -16,6 +17,8 @@ const reducer = (state, action) => {
       return { ...state, ...data };
     case actions.updateWallet:
       return { ...state, wallet: data };
+    case actions.reset:
+      return { ...initialState };
     default:
       throw new Error("Undefined reducer action type");
   }
